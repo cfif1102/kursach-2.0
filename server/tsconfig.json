@@ -16,6 +16,16 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@contract/*": ["./src/contract/*"],
+      "@customer/*": ["./src/customer/*"],
+      "@equipment/*": ["./src/equipment/*"],
+      "@facility/*": ["./src/facility/*"],
+      "@licensee/*": ["./src/licensee/*"],
+      "@types": ["./src/types"],
+      "@config": ["./src/config"],
+      "@typeorm/*": ["./src/typeorm/*"]
+    }
   }
 }
