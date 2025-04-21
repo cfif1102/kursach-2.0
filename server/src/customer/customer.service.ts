@@ -1,4 +1,42 @@
 import { Injectable } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
+import { Customer } from './entities/customer.entity';
+import { CreateCustomerDto } from './dto/create-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 
 @Injectable()
-export class CustomerService {}
+export class CustomerService {
+  private readonly customerRepo: Repository<Customer>;
+
+  constructor(dataSource: DataSource) {
+    this.customerRepo = dataSource.getRepository(Customer);
+  }
+
+  findOne(id: number) {
+    return this.customerRepo.findOneOrFail({ where: { id } });
+  }
+
+  findMany() {
+    return this.customerRepo.find();
+  }
+
+  create(dto: CreateCustomerDto) {
+    const customerPlain = this.customerRepo.create(dto);
+
+    return this.customerRepo.save(customerPlain);
+  }
+
+  async update(id: number, dto: UpdateCustomerDto) {
+    const customer = await this.findOne(id);
+
+    Object.assign(customer, dto);
+
+    return this.customerRepo.save(customer);
+  }
+
+  async delete(id: number) {
+    const customer = await this.findOne(id);
+
+    await this.customerRepo.remove(customer);
+  }
+}
