@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CustomerDto } from './dto/customer.dto';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { Serialize } from 'src/common/decorators/serialize.decorator';
+import { CustomerPaginatedDto } from './dto/customer-paginated.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @ApiTags('Customer')
 @Controller('customers')
@@ -12,10 +14,9 @@ export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Get()
-  @Serialize(CustomerDto)
-  @ApiOkResponse({ type: [CustomerDto] })
-  findMany() {
-    return this.customerService.findMany();
+  @ApiOkResponse({ type: [CustomerPaginatedDto] })
+  findMany(@Query() paginationDto: PaginationDto) {
+    return this.customerService.findMany(paginationDto);
   }
 
   @Get(':id')

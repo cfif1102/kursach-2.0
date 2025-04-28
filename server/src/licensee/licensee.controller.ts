@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { LicenseeService } from './licensee.service';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { LicenseeDto } from './dto/licensee.dto';
 import { CreateLicenseeDto } from './dto/create-licensee.dto';
 import { UpdateLicenseeDto } from './dto/update-licensee.dto';
 import { Serialize } from 'src/common/decorators/serialize.decorator';
+import { LicenseePaginatedDto } from './dto/licensee-paginated.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @ApiTags('Licensee')
 @Controller('licensees')
@@ -19,10 +21,9 @@ export class LicenseeController {
   }
 
   @Get()
-  @Serialize(LicenseeDto)
-  @ApiOkResponse({ type: [LicenseeDto] })
-  findMany() {
-    return this.licenseeService.findMany();
+  @ApiOkResponse({ type: [LicenseePaginatedDto] })
+  findMany(@Query() paginationDto: PaginationDto) {
+    return this.licenseeService.findMany(paginationDto);
   }
 
   @Post()

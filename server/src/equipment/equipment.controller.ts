@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { EquipmentService } from './equipment.service';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { EquipmentDto } from './dto/equipment.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { Serialize } from 'src/common/decorators/serialize.decorator';
+import { EquipmentPaginatedDto } from './dto/equipment-paginated.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @ApiTags('Equipment')
 @Controller('equipments')
@@ -12,10 +14,9 @@ export class EquipmentController {
   constructor(private readonly equipmentService: EquipmentService) {}
 
   @Get()
-  @Serialize(EquipmentDto)
-  @ApiOkResponse({ type: [EquipmentDto] })
-  findMany() {
-    return this.equipmentService.findMany();
+  @ApiOkResponse({ type: [EquipmentPaginatedDto] })
+  findMany(@Query() paginationDto: PaginationDto) {
+    return this.equipmentService.findMany(paginationDto);
   }
 
   @Get(':id')

@@ -4,6 +4,8 @@ import { CreateLicenseeDto } from './dto/create-licensee.dto';
 import { UpdateLicenseeDto } from './dto/update-licensee.dto';
 import { CustomerService } from '@customer/customer.service';
 import { Repository, DataSource } from 'typeorm';
+import { LicenseePaginatedDto } from './dto/licensee-paginated.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class LicenseeService {
@@ -25,12 +27,19 @@ export class LicenseeService {
     });
   }
 
-  findMany() {
-    return this.licenseeRepo.find({
+  async findMany(dto: PaginationDto) {
+    const { pageSize, offset } = dto;
+    const [items, count] = await this.licenseeRepo.findAndCount({
+      skip: offset,
+      take: pageSize,
       relations: {
         customer: true,
       },
     });
+
+    console.log(items);
+
+    return new LicenseePaginatedDto(items, count, dto);
   }
 
   async create(dto: CreateLicenseeDto) {

@@ -4,6 +4,8 @@ import { Facility } from './entities/facility.entity';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { CustomerService } from '@customer/customer.service';
 import { UpdateFacilityDto } from './dto/update-facility.dto';
+import { FacilityPaginatedDto } from './dto/facility-paginated.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class FacilityService {
@@ -25,12 +27,17 @@ export class FacilityService {
     });
   }
 
-  findMany() {
-    return this.facilityRepo.find({
+  async findMany(dto: PaginationDto) {
+    const { pageSize, offset } = dto;
+    const [items, count] = await this.facilityRepo.findAndCount({
+      skip: offset,
+      take: pageSize,
       relations: {
         customer: true,
       },
     });
+
+    return new FacilityPaginatedDto(items, count, dto);
   }
 
   async create(dto: CreateFacilityDto) {

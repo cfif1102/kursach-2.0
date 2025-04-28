@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { FacilityService } from './facility.service';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FacilityDto } from './dto/facility.dto';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { UpdateFacilityDto } from './dto/update-facility.dto';
 import { Serialize } from 'src/common/decorators/serialize.decorator';
+import { FacilityPaginatedDto } from './dto/facility-paginated.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @ApiTags('Facility')
 @Controller('facilities')
@@ -19,10 +21,9 @@ export class FacilityController {
   }
 
   @Get()
-  @Serialize(FacilityDto)
-  @ApiOkResponse({ type: [FacilityDto] })
-  findMany() {
-    return this.facilityService.findMany();
+  @ApiOkResponse({ type: [FacilityPaginatedDto] })
+  findMany(@Query() paginationDto: PaginationDto) {
+    return this.facilityService.findMany(paginationDto);
   }
 
   @Post()

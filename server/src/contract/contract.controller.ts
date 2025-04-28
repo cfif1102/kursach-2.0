@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ContractService } from './contract.service';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ContractDto } from './dto/contract.dto';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { UpdateContractDto } from './dto/update-contract.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ContractPaginatedDto } from './dto/contract-paginated.dto';
 
 @ApiTags('Contract')
 @Controller('contracts')
@@ -17,9 +19,9 @@ export class ContractController {
   }
 
   @Get()
-  @ApiOkResponse({ type: [ContractDto] })
-  findMany() {
-    return this.contractService.findMany();
+  @ApiOkResponse({ type: [ContractPaginatedDto] })
+  findMany(@Query() paginationDto: PaginationDto) {
+    return this.contractService.findMany(paginationDto);
   }
 
   @Post()

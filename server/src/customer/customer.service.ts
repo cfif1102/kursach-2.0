@@ -3,6 +3,8 @@ import { DataSource, Repository } from 'typeorm';
 import { Customer } from './entities/customer.entity';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { CustomerPaginatedDto } from './dto/customer-paginated.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class CustomerService {
@@ -16,8 +18,14 @@ export class CustomerService {
     return this.customerRepo.findOneOrFail({ where: { id } });
   }
 
-  findMany() {
-    return this.customerRepo.find();
+  async findMany(dto: PaginationDto) {
+    const { pageSize, offset } = dto;
+    const [items, count] = await this.customerRepo.findAndCount({
+      skip: offset,
+      take: pageSize,
+    });
+
+    return new CustomerPaginatedDto(items, count, dto);
   }
 
   create(dto: CreateCustomerDto) {
