@@ -39,7 +39,7 @@ export class FacilityService {
 
     const facilityPlain = this.facilityRepo.create({ name, address, customer });
 
-    return facilityPlain;
+    return this.facilityRepo.save(facilityPlain);
   }
 
   async update(id: number, dto: UpdateFacilityDto) {

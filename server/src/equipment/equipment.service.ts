@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { Equipment } from './entities/equipment.entity';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
@@ -14,6 +14,14 @@ export class EquipmentService {
 
   findOne(id: number) {
     return this.equipmentRepo.findOneOrFail({ where: { id } });
+  }
+
+  findByIds(ids: number[]) {
+    return this.equipmentRepo.find({
+      where: {
+        id: In(ids),
+      },
+    });
   }
 
   findMany() {

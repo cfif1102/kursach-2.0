@@ -39,7 +39,7 @@ export class LicenseeService {
 
     const licenseePlain = this.licenseeRepo.create({ name, customer });
 
-    return licenseePlain;
+    return this.licenseeRepo.save(licenseePlain);
   }
 
   async update(id: number, dto: UpdateLicenseeDto) {

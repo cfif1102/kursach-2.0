@@ -1,0 +1,34 @@
+import { Body, Controller, Post, Res, StreamableFile } from '@nestjs/common';
+import { DocsService } from './docs.service';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateActDto } from './dto/create-act.dto';
+import { CreatePassportDto } from './dto/create-passport.dto';
+import { Response } from 'express';
+
+@ApiTags('Docs')
+@Controller('docs')
+export class DocsController {
+  constructor(private readonly docsService: DocsService) {}
+
+  @Post('create-act')
+  async generateAct(@Res({ passthrough: true }) res: Response, @Body() createActDto: CreateActDto) {
+    const { buffer, name } = await this.docsService.createActDocument(createActDto);
+
+    res.set({
+      'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'Content-Disposition': `attachment; filename="${name}"`,
+    });
+
+    return new StreamableFile(buffer);
+  }
+
+  @Post('create-passport')
+  async generatePassport(@Body() createPassportDto: CreatePassportDto) {
+    const { buffer, name } = await this.docsService.createPassportDocument(createPassportDto);
+
+    return new StreamableFile(buffer, {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      disposition: `attachment; filename="${encodeURIComponent(name)}"`,
+    });
+  }
+}

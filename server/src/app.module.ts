@@ -7,6 +7,7 @@ import { LicenseeModule } from '@licensee/licensee.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeormModule } from '@typeorm/typeorm.module';
+import { DocsModule } from './docs/docs.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TypeormModule } from '@typeorm/typeorm.module';
     FacilityModule,
     EquipmentModule,
     ContractModule,
+    DocsModule,
   ],
   controllers: [],
   providers: [],

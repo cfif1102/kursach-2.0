@@ -6,7 +6,7 @@ import { CustomerModule } from '@customer/customer.module';
 @Module({
   controllers: [LicenseeController],
   providers: [LicenseeService],
-  exports: [LicenseeModule],
+  exports: [LicenseeService],
   imports: [CustomerModule],
 })
 export class LicenseeModule {}
