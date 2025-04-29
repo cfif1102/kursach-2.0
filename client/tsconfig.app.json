@@ -32,6 +32,7 @@
       "@reducers": ["./src/store/reducers"],
       "@constants": ["./src/constants"],
       "@components/*": ["./src/components/*"],
+      "@hooks": ["./src/hooks"],
       "@assets/*": ["./src/assets/*"]
     }
   },

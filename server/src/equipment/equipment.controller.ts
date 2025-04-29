@@ -36,7 +36,7 @@ export class EquipmentController {
   @Patch(':id')
   @Serialize(EquipmentDto)
   @ApiOkResponse({ type: EquipmentDto })
-  update(@Param('id') id: number, dto: UpdateEquipmentDto) {
+  update(@Param('id') id: number, @Body() dto: UpdateEquipmentDto) {
     return this.equipmentService.update(id, dto);
   }
 

@@ -36,7 +36,7 @@ export class CustomerController {
   @Patch(':id')
   @Serialize(CustomerDto)
   @ApiOkResponse({ type: CustomerDto })
-  update(@Param('id') id: number, dto: UpdateCustomerDto) {
+  update(@Param('id') id: number, @Body() dto: UpdateCustomerDto) {
     return this.customerService.update(id, dto);
   }
 

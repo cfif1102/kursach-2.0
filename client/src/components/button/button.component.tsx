@@ -1,0 +1,19 @@
+import { FC } from 'react';
+import { ButtonProps } from './button.types';
+import { Button as ButtonMui } from '@mui/material';
+import { FILLED_BUTTON_SX } from './button.constants';
+
+export const Button: FC<ButtonProps> = ({
+  text,
+  icon,
+  onClick,
+  variant = 'outlined',
+  sx = FILLED_BUTTON_SX,
+  type = 'button',
+}) => {
+  return (
+    <ButtonMui variant={variant} endIcon={icon} onClick={onClick} sx={sx} type={type}>
+      {text}
+    </ButtonMui>
+  );
+};

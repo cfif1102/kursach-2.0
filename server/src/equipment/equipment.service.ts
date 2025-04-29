@@ -47,6 +47,8 @@ export class EquipmentService {
 
     Object.assign(equipment, dto);
 
+    console.log(equipment);
+
     return this.equipmentRepo.save(equipment);
   }
 
