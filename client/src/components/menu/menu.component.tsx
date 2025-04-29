@@ -8,6 +8,7 @@ import EditRoadOutlinedIcon from '@mui/icons-material/EditRoadOutlined';
 import AccessibleOutlinedIcon from '@mui/icons-material/AccessibleOutlined';
 import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
+import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
 
 export const Menu: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,13 +36,19 @@ export const Menu: FC = () => {
         text="Заказчики"
       />
       <MenuItem
+        to="/licensees"
+        icon={<AssignmentIndOutlinedIcon />}
+        isOpen={isOpen}
+        text="Лицензиаты"
+      />
+      <MenuItem
         to="/contracts"
         icon={<AssignmentTurnedInOutlinedIcon />}
         isOpen={isOpen}
         text="Контракты"
       />
       <MenuItem
-        to="/customers"
+        to="/documents"
         icon={<ContentPasteOutlinedIcon />}
         isOpen={isOpen}
         text="Документы"

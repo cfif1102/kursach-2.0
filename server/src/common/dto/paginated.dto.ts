@@ -20,8 +20,13 @@ export class PaginatedDto<T, K> {
   @Expose()
   prevPage?: number;
 
+  @ApiProperty()
+  @Expose()
+  total: number;
+
   constructor(dto: ClassConstructor<T>, items: K[], count: number, paginationDto: PaginationDto) {
     this.items = items.map((item) => plainToInstance(dto, item, { excludeExtraneousValues: true }));
+    this.total = count;
 
     const { offset, page, pageSize } = paginationDto;
 

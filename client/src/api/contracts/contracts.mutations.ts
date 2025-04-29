@@ -1,0 +1,29 @@
+import { ICreateCustomer, IContract } from '@@types';
+import { useMutation } from '@tanstack/react-query';
+import { api, queryClient } from '../query-client';
+
+export const useCreateContract = () =>
+  useMutation<IContract, Error, ICreateCustomer>({
+    mutationFn: (payload) => api.post('/contracts', payload).then((res) => res.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['contracts'] });
+    },
+  });
+
+export const useUpdateContract = () =>
+  useMutation<IContract, Error, { id: number; data: ICreateCustomer }>({
+    mutationFn: ({ id, data }) => api.patch(`/contracts/${id}`, data).then((res) => res.data),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['contracts'] });
+      queryClient.invalidateQueries({ queryKey: ['contracts', variables.id] });
+    },
+  });
+
+export const useDeleteContract = () =>
+  useMutation<void, Error, number>({
+    mutationFn: (id) => api.delete(`/contracts/${id}`),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ['contracts'] });
+      queryClient.invalidateQueries({ queryKey: ['contracts', id] });
+    },
+  });

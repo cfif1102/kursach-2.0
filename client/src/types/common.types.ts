@@ -1,5 +1,6 @@
 export interface IPaginated<T extends object> {
   items: T[];
+  total: number;
   nextPage?: number;
   prevPage?: number;
 }

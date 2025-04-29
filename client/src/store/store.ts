@@ -1,10 +1,7 @@
-import { equipmentSlice } from '@reducers';
 import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({
-  reducer: {
-    equipment: equipmentSlice.reducer,
-  },
+  reducer: {},
 });
 
 export type AppStore = typeof store;
