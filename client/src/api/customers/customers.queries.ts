@@ -1,4 +1,4 @@
-import { ICustomer, IPaginated, IPagination } from '@@types';
+import { ICustomer, ICustomerSearch, IPaginated, IPagination } from '@@types';
 import { api } from '@api';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
@@ -15,5 +15,15 @@ export const useCustomers = (
   useQuery<IPaginated<ICustomer>>({
     queryKey: ['customers', params],
     queryFn: () => api.get('/customers', { params }).then((res) => res.data),
+    ...options,
+  });
+
+export const useCustomersSearch = (
+  params: ICustomerSearch,
+  options?: UseQueryOptions<IPaginated<ICustomer>>,
+) =>
+  useQuery<IPaginated<ICustomer>>({
+    queryKey: ['customers-search', params],
+    queryFn: () => api.get('/customers/search', { params }).then((res) => res.data),
     ...options,
   });

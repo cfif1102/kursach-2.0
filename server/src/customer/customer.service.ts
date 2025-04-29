@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, ILike, Repository } from 'typeorm';
 import { Customer } from './entities/customer.entity';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { CustomerPaginatedDto } from './dto/customer-paginated.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { SearchCustomerDto } from './dto/search-customer.dto';
 
 @Injectable()
 export class CustomerService {
@@ -23,6 +24,19 @@ export class CustomerService {
     const [items, count] = await this.customerRepo.findAndCount({
       skip: offset,
       take: pageSize,
+    });
+
+    return new CustomerPaginatedDto(items, count, dto);
+  }
+
+  async search(dto: SearchCustomerDto) {
+    const { pageSize, offset, name } = dto;
+    const [items, count] = await this.customerRepo.findAndCount({
+      skip: offset,
+      take: pageSize,
+      where: {
+        name: ILike(`%${name}%`),
+      },
     });
 
     return new CustomerPaginatedDto(items, count, dto);

@@ -1,4 +1,6 @@
-export const MODAL_STYLES = {
+import { SxProps } from '@mui/material';
+
+export const MODAL_STYLES: SxProps = {
   position: 'absolute',
   top: '50%',
   left: '50%',

@@ -37,8 +37,6 @@ export class LicenseeService {
       },
     });
 
-    console.log(items);
-
     return new LicenseePaginatedDto(items, count, dto);
   }
 

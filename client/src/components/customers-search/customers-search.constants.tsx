@@ -1,20 +1,21 @@
+import { ICustomer } from '@@types';
+import { Button } from '@components/button';
 import { FILLED_BUTTON_SX } from '@components/button/button.constants';
 import { CellLoader } from '@components/cell-loader';
-import { PARAMS } from '@constants';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { SxProps } from '@mui/material';
-import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import { COLORS, PARAMS } from '@constants';
 
 export const ADD_BTN_SX: SxProps = {
   ...FILLED_BUTTON_SX,
   mt: 2,
 };
 
-export const getEquipmentColumns = (
+export const getCustomerColumns = (
   isLoading: boolean,
-  editCb: (id: number) => void,
-  deleteCb: (id: number) => void,
-): GridColDef[] => [
+  onSelectCb: (customer: ICustomer) => void,
+): GridColDef<ICustomer>[] => [
   {
     field: 'id',
     headerName: 'Код',
@@ -35,28 +36,29 @@ export const getEquipmentColumns = (
     field: 'actions',
     type: 'actions',
     headerName: '',
-    width: 100,
+    width: 150,
     sortable: false,
     filterable: false,
     disableColumnMenu: true,
-    getActions: (params: GridRowParams) => [
-      <GridActionsCellItem
-        icon={<EditIcon />}
-        label="Редактировать"
-        onClick={() => editCb(Number(params.id))}
-      />,
-      <GridActionsCellItem
-        icon={<DeleteIcon />}
-        label="Удалить"
-        onClick={() => deleteCb(Number(params.id))}
-      />,
-    ],
+    renderCell: (params) => (
+      <Button
+        text="Выбрать"
+        icon={<CheckOutlinedIcon />}
+        onClick={() => onSelectCb(params.row)}
+        variant="outlined"
+        sx={{
+          color: COLORS.TEXT_COLOR,
+          borderColor: COLORS.TEXT_COLOR,
+          textTransform: 'unset',
+        }}
+      />
+    ),
   },
 ];
 
-export const fakeEquipmentsData = Array(PARAMS.PAGE_SIZE)
+export const fakeCustomerData = Array(PARAMS.PAGE_SIZE)
   .fill({})
   .map((_, index) => ({
     id: index,
-    name: 'loading',
+    name: '',
   }));

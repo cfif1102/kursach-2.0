@@ -7,6 +7,7 @@ export const useCreateCustomer = () =>
     mutationFn: (payload) => api.post('/customers', payload).then((res) => res.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['customers'] });
+      queryClient.invalidateQueries({ queryKey: ['customers-search'] });
     },
   });
 
@@ -15,6 +16,7 @@ export const useUpdateCustomer = () =>
     mutationFn: ({ id, data }) => api.patch(`/customers/${id}`, data).then((res) => res.data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['customers'] });
+      queryClient.invalidateQueries({ queryKey: ['customers-search'] });
       queryClient.invalidateQueries({ queryKey: ['customers', variables.id] });
     },
   });
@@ -24,6 +26,7 @@ export const useDeleteCustomer = () =>
     mutationFn: (id) => api.delete(`/customers/${id}`),
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ['customers'] });
+      queryClient.invalidateQueries({ queryKey: ['customers-search'] });
       queryClient.invalidateQueries({ queryKey: ['customers', id] });
     },
   });

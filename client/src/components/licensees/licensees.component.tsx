@@ -1,15 +1,30 @@
-import { useLicensees } from '@api';
+import { useDeleteLicensee, useLicensees } from '@api';
 import { PARAMS } from '@constants';
 import { Box } from '@mui/material';
-import { GridPaginationModel, DataGrid } from '@mui/x-data-grid';
+import { GridPaginationModel } from '@mui/x-data-grid';
 import { FC, useState, useMemo } from 'react';
-import { fakeLicenseeData, getLicenseeColumns } from './licensees.constants';
+import { ADD_BTN_SX, fakeLicenseeData, getLicenseeColumns } from './licensees.constants';
+import { ILicensee } from '@@types';
+import { useModalControls } from '@hooks';
+import { AddLicenseeModal } from './modals/add-licensee-modal';
+import { Dialog } from '@components/dialog';
+import { EditLicenseeModal } from './modals/edit-licensee-modal';
+import { DataGrid } from '@components/data-grid';
+import { Button } from '@components/button';
 
 export const Licensees: FC = () => {
+  const addModalControls = useModalControls();
+  const editModalControls = useModalControls();
+  const deleteDialogControls = useModalControls();
+
+  const [licensee, setLicensee] = useState<ILicensee | null>(null);
+
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: PARAMS.PAGE_SIZE,
   });
+
+  const { mutate: deleteLicensee } = useDeleteLicensee();
 
   const { data, isLoading, isRefetching } = useLicensees({
     page: paginationModel.page + 1,
@@ -19,11 +34,61 @@ export const Licensees: FC = () => {
   const isLoad = isLoading || isRefetching;
 
   const handleEdit = (id: number) => {
-    console.log(id);
+    if (!data?.items) {
+      return;
+    }
+
+    const licenseeFound = data.items.find((item) => item.id === id);
+
+    if (!licenseeFound) {
+      return;
+    }
+
+    setLicensee(licenseeFound);
+
+    editModalControls.handleOpen();
+  };
+
+  const handleModalEditClose = () => {
+    setLicensee(null);
+
+    editModalControls.handleClose();
+  };
+
+  const declineDelete = () => {
+    setLicensee(null);
+
+    deleteDialogControls.handleClose();
+  };
+
+  const okDelete = () => {
+    if (!licensee) {
+      return;
+    }
+
+    deleteLicensee(licensee.id, {
+      onSuccess: () => {
+        setLicensee(null);
+
+        deleteDialogControls.handleClose();
+      },
+    });
   };
 
   const handleDelete = (id: number) => {
-    console.log(id);
+    if (!data?.items) {
+      return;
+    }
+
+    const licenseeFound = data.items.find((item) => item.id === id);
+
+    if (!licenseeFound) {
+      return;
+    }
+
+    setLicensee(licenseeFound);
+
+    deleteDialogControls.handleOpen();
   };
 
   const handlePaginationModelChange = (model: GridPaginationModel) => {
@@ -46,6 +111,27 @@ export const Licensees: FC = () => {
         keepNonExistentRowsSelected
         disableVirtualization
       />
+
+      <Button onClick={addModalControls.handleOpen} text="Добавить" sx={ADD_BTN_SX} />
+
+      <AddLicenseeModal onClose={addModalControls.handleClose} isOpen={addModalControls.open} />
+
+      <Dialog
+        onOk={okDelete}
+        onDecline={declineDelete}
+        open={deleteDialogControls.open}
+        onClose={deleteDialogControls.handleClose}
+        title="Удаление лицензиата"
+        text="Вы действительно хотите удалить лицензиата?"
+      />
+
+      {licensee && (
+        <EditLicenseeModal
+          isOpen={editModalControls.open}
+          onClose={handleModalEditClose}
+          item={licensee}
+        />
+      )}
     </Box>
   );
 };

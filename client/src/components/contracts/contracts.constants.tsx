@@ -1,8 +1,15 @@
+import { PARAMS } from '@constants';
+import { GridColDef, GridRowParams, GridActionsCellItem } from '@mui/x-data-grid';
+import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { IContract } from '@@types';
 import { CellLoader } from '@components/cell-loader';
-import { PARAMS } from '@constants';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
+import { FILLED_BUTTON_SX } from '@components/button/button.constants';
+import { SxProps } from '@mui/material';
+
+export const ADD_BTN_SX: SxProps = {
+  ...FILLED_BUTTON_SX,
+  mt: 2,
+};
 
 export const getContractColumns = (
   isLoading: boolean,
@@ -24,6 +31,14 @@ export const getContractColumns = (
     flex: 2,
     disableColumnMenu: true,
     renderCell: (params) => (isLoading ? <CellLoader /> : params.value),
+  },
+  {
+    field: 'customer',
+    headerName: 'Заказчик',
+    editable: false,
+    flex: 2,
+    disableColumnMenu: true,
+    renderCell: (params) => (isLoading ? <CellLoader /> : params.row.customer.name),
   },
   {
     field: 'actions',

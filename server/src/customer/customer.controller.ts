@@ -7,14 +7,21 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { Serialize } from 'src/common/decorators/serialize.decorator';
 import { CustomerPaginatedDto } from './dto/customer-paginated.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { SearchCustomerDto } from './dto/search-customer.dto';
 
 @ApiTags('Customer')
 @Controller('customers')
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
+  @Get('/search')
+  @ApiOkResponse({ type: CustomerPaginatedDto })
+  search(@Query() searchDto: SearchCustomerDto) {
+    return this.customerService.search(searchDto);
+  }
+
   @Get()
-  @ApiOkResponse({ type: [CustomerPaginatedDto] })
+  @ApiOkResponse({ type: CustomerPaginatedDto })
   findMany(@Query() paginationDto: PaginationDto) {
     return this.customerService.findMany(paginationDto);
   }

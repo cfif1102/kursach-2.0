@@ -3,6 +3,13 @@ import { GridColDef, GridRowParams, GridActionsCellItem } from '@mui/x-data-grid
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { IFacility } from '@@types';
 import { CellLoader } from '@components/cell-loader';
+import { FILLED_BUTTON_SX } from '@components/button/button.constants';
+import { SxProps } from '@mui/material';
+
+export const ADD_BTN_SX: SxProps = {
+  ...FILLED_BUTTON_SX,
+  mt: 2,
+};
 
 export const getFacilityColumns = (
   isLoading: boolean,

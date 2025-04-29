@@ -1,6 +1,6 @@
 import { CustomerDto } from '@customer/dto/customer.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 export class ContractDto {
   @ApiProperty()
@@ -13,5 +13,6 @@ export class ContractDto {
 
   @ApiProperty()
   @Expose()
+  @Type(() => CustomerDto)
   customer: CustomerDto;
 }
