@@ -1,13 +1,15 @@
 import { FC } from 'react';
-import { AddEquipmentProps } from './add-equipment-modal.types';
+
 import { Box, Modal, TextField } from '@mui/material';
-import { MODAL_STYLES } from '@constants';
-import { AddEquipmentFormData, AddEquipmentSchema } from './add-equipment-modal.validation';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@components/button';
-import { FILLED_BUTTON_SX } from '@components/button/button.constants';
+
 import { useCreateEquipment } from '@api';
+import { Button, FILLED_BUTTON_SX } from '@components';
+import { MODAL_STYLES } from '@constants';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller } from 'react-hook-form';
+
+import { AddEquipmentProps } from './add-equipment-modal.types';
+import { AddEquipmentFormData, AddEquipmentSchema } from './add-equipment-modal.validation';
 
 export const AddEquipmentModal: FC<AddEquipmentProps> = ({ isOpen, onClose }) => {
   const { mutate: createEquipment } = useCreateEquipment();

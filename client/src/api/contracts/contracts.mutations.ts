@@ -1,5 +1,7 @@
-import { IContract, ICreateContract } from '@@types';
 import { useMutation } from '@tanstack/react-query';
+
+import { IContract, ICreateContract } from '@@types';
+
 import { api, queryClient } from '../query-client';
 
 export const useCreateContract = () =>

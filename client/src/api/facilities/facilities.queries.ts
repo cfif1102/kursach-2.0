@@ -1,6 +1,7 @@
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
 import { IFacility, IPaginated, IPagination } from '@@types';
 import { api } from '@api';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
 export const useFacility = (id: number) =>
   useQuery<IFacility>({

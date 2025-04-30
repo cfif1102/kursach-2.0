@@ -1,5 +1,6 @@
-import { COLORS } from '@constants';
 import { SxProps } from '@mui/material';
+
+import { COLORS } from '@constants';
 
 export const DATA_GRID_SX: SxProps = {
   '& .MuiDataGrid-columnHeaders': {

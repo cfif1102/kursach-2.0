@@ -1,7 +1,7 @@
+import { COLORS, PARAMS } from '@constants';
+import { darken } from 'polished';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { darken } from 'polished';
-import { COLORS, PARAMS } from '@constants';
 
 export const MenuLink = styled(NavLink)`
   color: ${darken(0.3, 'white')};

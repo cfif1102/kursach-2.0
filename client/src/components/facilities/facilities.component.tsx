@@ -1,16 +1,18 @@
-import { useDeleteFacility, useFacilities } from '@api';
-import { ADD_BTN_SX, fakeFacilitiesData, getFacilityColumns } from './facilities.constants';
-import { PARAMS } from '@constants';
+import { FC, useState, useMemo } from 'react';
+
 import { Box } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
-import { FC, useState, useMemo } from 'react';
-import { DataGrid } from '@components/data-grid';
-import { useModalControls } from '@hooks';
-import { Button } from '@components/button';
-import { AddFacilityModal } from './modals/add-facility-modal';
+
 import { IFacility } from '@@types';
+import { useDeleteFacility, useFacilities } from '@api';
+import { Button, DataGrid, Dialog } from '@components';
+import { PARAMS } from '@constants';
+import { useModalControls } from '@hooks';
+
+import { ADD_BTN_SX, fakeFacilitiesData, getFacilityColumns } from './facilities.constants';
+import { AddFacilityModal } from './modals/add-facility-modal';
 import { EditFacilityModal } from './modals/edit-facility-modal';
-import { Dialog } from '@components/dialog';
+
 
 export const Facilities: FC = () => {
   const addModalControls = useModalControls();

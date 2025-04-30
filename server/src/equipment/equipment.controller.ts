@@ -7,14 +7,21 @@ import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { Serialize } from 'src/common/decorators/serialize.decorator';
 import { EquipmentPaginatedDto } from './dto/equipment-paginated.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { SearchEquipmentDto } from './dto/search-equipment.dto';
 
 @ApiTags('Equipment')
 @Controller('equipments')
 export class EquipmentController {
   constructor(private readonly equipmentService: EquipmentService) {}
 
+  @Get('/search')
+  @ApiOkResponse({ type: EquipmentPaginatedDto })
+  search(@Query() searchDto: SearchEquipmentDto) {
+    return this.equipmentService.search(searchDto);
+  }
+
   @Get()
-  @ApiOkResponse({ type: [EquipmentPaginatedDto] })
+  @ApiOkResponse({ type: EquipmentPaginatedDto })
   findMany(@Query() paginationDto: PaginationDto) {
     return this.equipmentService.findMany(paginationDto);
   }

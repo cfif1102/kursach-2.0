@@ -1,5 +1,7 @@
-import { ICustomer, ICreateCustomer } from '@@types';
 import { useMutation } from '@tanstack/react-query';
+
+import { ICustomer, ICreateCustomer } from '@@types';
+
 import { api, queryClient } from '../query-client';
 
 export const useCreateCustomer = () =>

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { DialogProps } from './dialog.types';
+
 import {
   Button,
   DialogActions,
@@ -8,6 +8,8 @@ import {
   DialogTitle,
   Dialog as MuiDialog,
 } from '@mui/material';
+
+import { DialogProps } from './dialog.types';
 
 export const Dialog: FC<DialogProps> = ({ onOk, onDecline, open, onClose, title, text }) => {
   return (

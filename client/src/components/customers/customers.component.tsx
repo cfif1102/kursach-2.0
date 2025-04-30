@@ -1,16 +1,18 @@
-import { useCustomers, useDeleteCustomer } from '@api';
-import { PARAMS } from '@constants';
 import { FC, useMemo, useState } from 'react';
-import { GridPaginationModel } from '@mui/x-data-grid';
-import { ADD_BTN_SX, fakeCustomerData, getEquipmentColumns } from './customers.constants';
+
 import { Box } from '@mui/material';
-import { DataGrid } from '@components/data-grid';
-import { useModalControls } from '@hooks';
-import { Button } from '@components/button';
+import { GridPaginationModel } from '@mui/x-data-grid';
+
 import { ICustomer } from '@@types';
+import { useCustomers, useDeleteCustomer } from '@api';
+import { Button, DataGrid, Dialog } from '@components';
+import { PARAMS } from '@constants';
+import { useModalControls } from '@hooks';
+
+import { ADD_BTN_SX, fakeCustomerData, getEquipmentColumns } from './customers.constants';
 import { AddCustomerModal } from './modals/add-customer-modal';
-import { Dialog } from '@components/dialog';
 import { EditCustomerModal } from './modals/edit-customer-modal';
+
 
 export const Customers: FC = () => {
   const addModalControls = useModalControls();

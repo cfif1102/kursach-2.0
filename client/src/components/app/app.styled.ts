@@ -1,6 +1,6 @@
+import roboto from '@assets/fonts/Roboto-Regular.ttf';
 import { COLORS } from '@constants';
 import styled, { createGlobalStyle } from 'styled-components';
-import roboto from '@assets/fonts/Roboto-Regular.ttf';
 
 export const GlobalStyled = createGlobalStyle`
   @font-face {

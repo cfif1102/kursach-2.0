@@ -1,16 +1,18 @@
-import { useDeleteLicensee, useLicensees } from '@api';
-import { PARAMS } from '@constants';
+import { FC, useState, useMemo } from 'react';
+
 import { Box } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
-import { FC, useState, useMemo } from 'react';
-import { ADD_BTN_SX, fakeLicenseeData, getLicenseeColumns } from './licensees.constants';
+
 import { ILicensee } from '@@types';
+import { useDeleteLicensee, useLicensees } from '@api';
+import { Button, DataGrid, Dialog } from '@components';
+import { PARAMS } from '@constants';
 import { useModalControls } from '@hooks';
+
+import { ADD_BTN_SX, fakeLicenseeData, getLicenseeColumns } from './licensees.constants';
 import { AddLicenseeModal } from './modals/add-licensee-modal';
-import { Dialog } from '@components/dialog';
 import { EditLicenseeModal } from './modals/edit-licensee-modal';
-import { DataGrid } from '@components/data-grid';
-import { Button } from '@components/button';
+
 
 export const Licensees: FC = () => {
   const addModalControls = useModalControls();

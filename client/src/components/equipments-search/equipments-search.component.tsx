@@ -10,8 +10,8 @@ import { DataGrid } from '@components';
 import { MODAL_STYLES, PARAMS } from '@constants';
 import { useDebounce } from '@hooks';
 
-import { getCustomerColumns } from './customers-search.constants';
-import { CustomerSearchProps } from './customers-search.types';
+import { getCustomerColumns } from './equipments-search.constants';
+import { CustomerSearchProps } from './equipments-search.types';
 
 export const CustomersSearch: FC<CustomerSearchProps> = ({ open, onClose, onChange }) => {
   const [search, setSearch] = useState('');

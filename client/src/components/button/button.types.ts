@@ -1,5 +1,6 @@
-import { SxProps } from '@mui/material';
 import { ReactElement, MouseEvent } from 'react';
+
+import { SxProps } from '@mui/material';
 
 export interface ButtonProps {
   variant?: 'text' | 'contained' | 'outlined';

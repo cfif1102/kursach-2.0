@@ -1,6 +1,7 @@
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
 import { ILicensee, IPaginated, IPagination } from '@@types';
 import { api } from '@api';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
 export const useLicensee = (id: number) =>
   useQuery<ILicensee>({

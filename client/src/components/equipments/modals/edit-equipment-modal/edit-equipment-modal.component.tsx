@@ -1,13 +1,16 @@
 import { FC } from 'react';
+
 import { Box, Modal, TextField } from '@mui/material';
-import { MODAL_STYLES } from '@constants';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@components/button';
-import { FILLED_BUTTON_SX } from '@components/button/button.constants';
+
 import { useUpdateEquipment } from '@api';
-import { EditEquipmentFormData, EditEquipmentSchema } from './edit-equipment-modal.validation';
+import { Button, FILLED_BUTTON_SX } from '@components';
+import { MODAL_STYLES } from '@constants';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller } from 'react-hook-form';
+
 import { EditEquipmentProps } from './edit-equipment-modal.types';
+import { EditEquipmentFormData, EditEquipmentSchema } from './edit-equipment-modal.validation';
+
 
 export const EditEquipmentModal: FC<EditEquipmentProps> = ({ isOpen, onClose, item }) => {
   const { mutate: updateEquipment } = useUpdateEquipment();

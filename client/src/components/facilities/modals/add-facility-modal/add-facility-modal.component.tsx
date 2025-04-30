@@ -1,16 +1,18 @@
 import { FC, useRef, useState } from 'react';
+
 import { Box, Modal, TextField } from '@mui/material';
-import { COLORS, MODAL_STYLES } from '@constants';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@components/button';
-import { FILLED_BUTTON_SX } from '@components/button/button.constants';
-import { AddFacilityProps } from './add-facility-modal.types';
-import { useCreateFacility } from '@api';
-import { AddFacilityFormData, AddFacilitySchema } from './add-facility-modal.validation';
+
 import { ICustomer } from '@@types';
+import { useCreateFacility } from '@api';
+import { Button, CustomersSearch, FILLED_BUTTON_SX } from '@components';
+import { COLORS, MODAL_STYLES } from '@constants';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useModalControls } from '@hooks';
-import { CustomersSearch } from '@components/customers-search';
+import { useForm, Controller } from 'react-hook-form';
+
+import { AddFacilityProps } from './add-facility-modal.types';
+import { AddFacilityFormData, AddFacilitySchema } from './add-facility-modal.validation';
+
 
 export const AddFacilityModal: FC<AddFacilityProps> = ({ isOpen, onClose }) => {
   const customerInputRef = useRef<HTMLInputElement | null>(null);

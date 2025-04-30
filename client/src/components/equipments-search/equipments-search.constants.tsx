@@ -1,8 +1,7 @@
-
 import { SxProps } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { ICustomer } from '@@types';
+import { IEquipment } from '@@types';
 import { Button, CellLoader, FILLED_BUTTON_SX } from '@components';
 import { COLORS, PARAMS } from '@constants';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
@@ -12,10 +11,10 @@ export const ADD_BTN_SX: SxProps = {
   mt: 2,
 };
 
-export const getCustomerColumns = (
+export const getEquipmentsColumns = (
   isLoading: boolean,
-  onSelectCb: (customer: ICustomer) => void,
-): GridColDef<ICustomer>[] => [
+  onSelectCb: (equipment: IEquipment) => void,
+): GridColDef<IEquipment>[] => [
   {
     field: 'id',
     headerName: 'Код',
@@ -56,7 +55,7 @@ export const getCustomerColumns = (
   },
 ];
 
-export const fakeCustomerData = Array(PARAMS.PAGE_SIZE)
+export const fakeEquipmentData = Array(PARAMS.PAGE_SIZE)
   .fill({})
   .map((_, index) => ({
     id: index,

@@ -1,6 +1,7 @@
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
 import { ICustomer, ICustomerSearch, IPaginated, IPagination } from '@@types';
 import { api } from '@api';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
 export const useCustomer = (id: number) =>
   useQuery<ICustomer>({

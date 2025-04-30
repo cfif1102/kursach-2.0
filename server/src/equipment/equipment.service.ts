@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, In, Repository } from 'typeorm';
+import { DataSource, ILike, In, Repository } from 'typeorm';
 import { Equipment } from './entities/equipment.entity';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { EquipmentPaginatedDto } from './dto/equipment-paginated.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { SearchEquipmentDto } from './dto/search-equipment.dto';
 
 @Injectable()
 export class EquipmentService {
@@ -24,6 +25,19 @@ export class EquipmentService {
         id: In(ids),
       },
     });
+  }
+
+  async search(dto: SearchEquipmentDto) {
+    const { pageSize, offset, name } = dto;
+    const [items, count] = await this.equipmentRepo.findAndCount({
+      skip: offset,
+      take: pageSize,
+      where: {
+        name: ILike(`%${name}%`),
+      },
+    });
+
+    return new EquipmentPaginatedDto(items, count, dto);
   }
 
   async findMany(paginationDto: PaginationDto) {

@@ -1,16 +1,18 @@
-import { useContracts, useDeleteFacility } from '@api';
-import { ADD_BTN_SX, fakeContractData, getContractColumns } from './contracts.constants';
-import { PARAMS } from '@constants';
+import { FC, useState, useMemo } from 'react';
+
 import { Box } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
-import { FC, useState, useMemo } from 'react';
-import { DataGrid } from '@components/data-grid';
-import { useModalControls } from '@hooks';
-import { Button } from '@components/button';
+
 import { IContract } from '@@types';
-import { Dialog } from '@components/dialog';
+import { useContracts, useDeleteFacility } from '@api';
+import { Button, DataGrid, Dialog } from '@components';
+import { PARAMS } from '@constants';
+import { useModalControls } from '@hooks';
+
+import { ADD_BTN_SX, fakeContractData, getContractColumns } from './contracts.constants';
 import { AddContractModal } from './modals/add-contract-modal';
 import { EditContractModal } from './modals/edit-contract-modal';
+
 
 export const Contracts: FC = () => {
   const addModalControls = useModalControls();

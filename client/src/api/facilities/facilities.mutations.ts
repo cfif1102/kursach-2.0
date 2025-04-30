@@ -1,5 +1,7 @@
-import { ICreateFacility, IFacility } from '@@types';
 import { useMutation } from '@tanstack/react-query';
+
+import { ICreateFacility, IFacility } from '@@types';
+
 import { api, queryClient } from '../query-client';
 
 export const useCreateFacility = () =>

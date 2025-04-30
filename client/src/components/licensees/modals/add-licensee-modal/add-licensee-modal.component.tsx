@@ -1,16 +1,18 @@
 import { FC, useRef, useState } from 'react';
+
 import { Box, Modal, TextField } from '@mui/material';
-import { COLORS, MODAL_STYLES } from '@constants';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@components/button';
-import { FILLED_BUTTON_SX } from '@components/button/button.constants';
-import { useModalControls } from '@hooks';
-import { CustomersSearch } from '@components/customers-search';
-import { AddLicenseeProps } from './add-licensee-modal.types';
-import { useCreateLicensee } from '@api';
+
 import { ICustomer } from '@@types';
+import { useCreateLicensee } from '@api';
+import { Button, CustomersSearch, FILLED_BUTTON_SX } from '@components';
+import { COLORS, MODAL_STYLES } from '@constants';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useModalControls } from '@hooks';
+import { useForm, Controller } from 'react-hook-form';
+
+import { AddLicenseeProps } from './add-licensee-modal.types';
 import { AddLicenseeFormData, AddLicenseeSchema } from './add-licensee-modal.validation';
+
 
 export const AddLicenseeModal: FC<AddLicenseeProps> = ({ isOpen, onClose }) => {
   const customerInputRef = useRef<HTMLInputElement | null>(null);

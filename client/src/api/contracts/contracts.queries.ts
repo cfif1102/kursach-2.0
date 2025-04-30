@@ -1,6 +1,7 @@
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
 import { IContract, IPaginated, IPagination } from '@@types';
 import { api } from '@api';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
 export const useContract = (id: number) =>
   useQuery<IContract>({

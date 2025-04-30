@@ -1,16 +1,18 @@
 import { FC, useRef, useState } from 'react';
+
 import { Box, Modal, TextField } from '@mui/material';
-import { COLORS, MODAL_STYLES } from '@constants';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@components/button';
-import { FILLED_BUTTON_SX } from '@components/button/button.constants';
+
 import { ICustomer } from '@@types';
-import { useModalControls } from '@hooks';
-import { CustomersSearch } from '@components/customers-search';
-import { AddContractProps } from './add-contract-modal.types';
 import { useCreateContract } from '@api';
+import { Button, CustomersSearch, FILLED_BUTTON_SX } from '@components';
+import { COLORS, MODAL_STYLES } from '@constants';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useModalControls } from '@hooks';
+import { useForm, Controller } from 'react-hook-form';
+
+import { AddContractProps } from './add-contract-modal.types';
 import { AddContractFormData, AddContractSchema } from './add-contract-modal.validation';
+
 
 export const AddContractModal: FC<AddContractProps> = ({ isOpen, onClose }) => {
   const customerInputRef = useRef<HTMLInputElement | null>(null);

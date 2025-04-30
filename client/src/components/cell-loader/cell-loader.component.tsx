@@ -1,5 +1,6 @@
-import { Box, Skeleton } from '@mui/material';
 import { FC } from 'react';
+
+import { Box, Skeleton } from '@mui/material';
 
 export const CellLoader: FC = () => {
   return (

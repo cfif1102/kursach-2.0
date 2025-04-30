@@ -31,7 +31,7 @@
       "@thunks": ["./src/store/thunks"],
       "@reducers": ["./src/store/reducers"],
       "@constants": ["./src/constants"],
-      "@components/*": ["./src/components/*"],
+      "@components": ["./src/components"],
       "@hooks": ["./src/hooks"],
       "@assets/*": ["./src/assets/*"]
     }

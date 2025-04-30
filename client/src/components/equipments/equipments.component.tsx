@@ -1,16 +1,17 @@
-import { useDeleteEquipment, useEquipments } from '@api';
-import { PARAMS } from '@constants';
 import { FC, useMemo, useState } from 'react';
-import { GridPaginationModel } from '@mui/x-data-grid';
-import { ADD_BTN_SX, fakeEquipmentsData, getEquipmentColumns } from './equipments.constants';
+
 import { Box } from '@mui/material';
-import { useModalControls } from '@hooks';
-import { AddEquipmentModal } from './modals/add-equipment-modal';
-import { Button } from '@components/button';
-import { DataGrid } from '@components/data-grid';
+import { GridPaginationModel } from '@mui/x-data-grid';
+
 import { IEquipment } from '@@types';
+import { useDeleteEquipment, useEquipments } from '@api';
+import { Button, DataGrid, Dialog } from '@components';
+import { PARAMS } from '@constants';
+import { useModalControls } from '@hooks';
+
+import { ADD_BTN_SX, fakeEquipmentsData, getEquipmentColumns } from './equipments.constants';
+import { AddEquipmentModal } from './modals/add-equipment-modal';
 import { EditEquipmentModal } from './modals/edit-equipment-modal';
-import { Dialog } from '@components/dialog';
 
 export const Equipments: FC = () => {
   const addModalControls = useModalControls();

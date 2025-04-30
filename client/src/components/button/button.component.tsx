@@ -1,7 +1,9 @@
 import { FC } from 'react';
-import { ButtonProps } from './button.types';
+
 import { Button as ButtonMui } from '@mui/material';
+
 import { FILLED_BUTTON_SX } from './button.constants';
+import { ButtonProps } from './button.types';
 
 export const Button: FC<ButtonProps> = ({
   text,

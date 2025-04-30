@@ -1,5 +1,7 @@
-import { ICreateLicensee, ILicensee } from '@@types';
 import { useMutation } from '@tanstack/react-query';
+
+import { ICreateLicensee, ILicensee } from '@@types';
+
 import { api, queryClient } from '../query-client';
 
 export const useCreateLicensee = () =>

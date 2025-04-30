@@ -1,5 +1,7 @@
-import { IEquipment, ICreateEquipment } from '@@types';
 import { useMutation } from '@tanstack/react-query';
+
+import { IEquipment, ICreateEquipment } from '@@types';
+
 import { api, queryClient } from '../query-client';
 
 export const useCreateEquipment = () =>
@@ -7,6 +9,7 @@ export const useCreateEquipment = () =>
     mutationFn: (payload) => api.post('/equipments', payload).then((res) => res.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['equipments'] });
+      queryClient.invalidateQueries({ queryKey: ['equipments-search'] });
     },
   });
 
@@ -16,6 +19,7 @@ export const useUpdateEquipment = () =>
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['equipments'] });
       queryClient.invalidateQueries({ queryKey: ['equipments', variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['equipments-search'] });
     },
   });
 
@@ -25,5 +29,6 @@ export const useDeleteEquipment = () =>
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ['equipments'] });
       queryClient.invalidateQueries({ queryKey: ['equipments', id] });
+      queryClient.invalidateQueries({ queryKey: ['equipments-search'] });
     },
   });

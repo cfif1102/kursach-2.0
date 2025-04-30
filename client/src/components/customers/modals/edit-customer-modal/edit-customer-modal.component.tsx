@@ -1,13 +1,16 @@
 import { FC } from 'react';
+
 import { Box, Modal, TextField } from '@mui/material';
-import { MODAL_STYLES } from '@constants';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@components/button';
-import { FILLED_BUTTON_SX } from '@components/button/button.constants';
-import { EditCustomerProps } from './edit-customer-modal.types';
+
 import { useUpdateCustomer } from '@api';
+import { Button, FILLED_BUTTON_SX } from '@components';
+import { MODAL_STYLES } from '@constants';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller } from 'react-hook-form';
+
+import { EditCustomerProps } from './edit-customer-modal.types';
 import { EditCustomerFormData, EditCustomerSchema } from './edit-customer-modal.validation';
+
 
 export const EditCustomerModal: FC<EditCustomerProps> = ({ isOpen, onClose, item }) => {
   const { mutate: updateCustomer } = useUpdateCustomer();
