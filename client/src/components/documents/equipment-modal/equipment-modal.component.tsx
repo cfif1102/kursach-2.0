@@ -18,16 +18,18 @@ export const EquipmentModal: FC<EquipmentModalProps> = ({
   open,
   mode,
   label,
+  end,
 }) => {
-  const { control, handleSubmit } = useForm<EquipmentModalFormData>({
+  const { control, handleSubmit } = useForm({
     resolver: yupResolver(EquipmentModalSchema),
     defaultValues: {
       value,
+      end,
     },
   });
 
-  const onSubmit = (data: EquipmentModalFormData) => {
-    handleSuccess(data.value);
+  const onSubmit = async (data: EquipmentModalFormData) => {
+    handleSuccess(data.value, data.end);
   };
 
   return (
@@ -67,6 +69,27 @@ export const EquipmentModal: FC<EquipmentModalProps> = ({
                 />
               )}
             />
+
+            {end !== undefined && (
+              <Controller
+                name="end"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    label={'Номер и срок действия'}
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                    sx={{
+                      width: 300,
+                      mt: 2,
+                    }}
+                    multiline
+                    size="small"
+                  />
+                )}
+              />
+            )}
 
             <Button
               text={mode === 'add' ? 'Добавить' : 'Сохранить'}

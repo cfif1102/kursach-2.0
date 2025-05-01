@@ -1,11 +1,20 @@
-import { FC, useCallback, useId, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useId, useState } from 'react';
 
-import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from '@mui/material';
 
 import { IEquipment, IFacility } from '@@types';
-import { useCreateActDocument } from '@api';
+import { useCreateActDocument, useCreatePassportDocument } from '@api';
 import { Button, EquipmentsSearch, FILLED_BUTTON_SX } from '@components';
 import { useModalControls } from '@hooks';
+import { downloadFile } from '@utils';
 
 import { DocEnums, DOCS_TYPES } from './documents.constants';
 import { EquipmentItem } from './equipment-item';
@@ -15,15 +24,20 @@ import { FacilitySelect } from './facility-select';
 export const Documents: FC = () => {
   const equipmentModalControls = useModalControls();
 
+  const [facilityText, setFacilityText] = useState('');
   const [facility, setFacility] = useState<IFacility | null>(null);
-  const [equipments, setEquipments] = useState<{ data: IEquipment; count: number }[]>([]);
+  const [equipments, setEquipments] = useState<{ data: IEquipment; count: number; end?: string }[]>(
+    [],
+  );
   const [equipment, setEquipment] = useState<{
     item: IEquipment;
     mode: 'add' | 'edit';
     value: number;
+    end?: string;
   } | null>(null);
 
   const { mutate: createActDocument } = useCreateActDocument();
+  const { mutate: createPassportDocument } = useCreatePassportDocument();
 
   const [docType, setDocType] = useState<DocEnums>(DocEnums.act);
   const selectedLabelId = useId();
@@ -35,7 +49,7 @@ export const Documents: FC = () => {
   const handleDeleteEquipment = (id: number) => () =>
     setEquipments((prev) => prev.filter((e) => e.data.id !== id));
 
-  const addEquipment = useCallback((eq: IEquipment, count: number) => {
+  const addEquipment = useCallback((eq: IEquipment, count: number, end?: string) => {
     setEquipments((prev) => {
       if (prev.some((e) => e.data.id === eq.id)) {
         window.alert('Оборудование уже есть в списке!');
@@ -43,25 +57,25 @@ export const Documents: FC = () => {
         return prev;
       }
 
-      return [...prev, { data: eq, count }];
+      return [...prev, { data: eq, count, end }];
     });
   }, []);
 
-  const handleEditEquipment = useCallback((eq: IEquipment, count: number) => {
-    setEquipments((prev) => prev.map((e) => (e.data.id === eq.id ? { ...e, count } : e)));
+  const handleEditEquipment = useCallback((eq: IEquipment, count: number, end?: string) => {
+    setEquipments((prev) => prev.map((e) => (e.data.id === eq.id ? { ...e, count, end } : e)));
   }, []);
 
   const handleSetEquipment = useCallback(
-    (eq: IEquipment, mode: 'edit' | 'add' = 'add', value: number = 0) => {
-      setEquipment({ item: eq, mode, value });
+    (eq: IEquipment, mode: 'edit' | 'add' = 'add', value: number = 0, end?: string) => {
+      setEquipment({ item: eq, mode, value, end });
 
       equipmentModalControls.handleOpen();
     },
     [],
   );
 
-  const handleSetEditEquipment = useCallback((eq: IEquipment, value: number) => {
-    handleSetEquipment(eq, 'edit', value);
+  const handleSetEditEquipment = useCallback((eq: IEquipment, value: number, end?: string) => {
+    handleSetEquipment(eq, 'edit', value, end);
   }, []);
 
   const handleCreateAct = () => {
@@ -77,32 +91,50 @@ export const Documents: FC = () => {
       return;
     }
 
-    const equipmentsData = equipments.map(({ data, count }) => ({ id: data.id, amount: count }));
+    if (docType === DocEnums.passport && !facilityText) {
+      window.alert('Вы не ввели тип объекта');
 
-    const data = {
-      objectId: facility.id,
-      equipments: equipmentsData,
-    };
+      return;
+    }
 
-    createActDocument(data, {
-      onSuccess: (data) => {
-        const { filename, blob } = data;
+    switch (docType) {
+      case DocEnums.act:
+        {
+          const equipmentsData = equipments.map(({ data, count }) => ({
+            id: data.id,
+            amount: count,
+          }));
 
-        const url = window.URL.createObjectURL(blob);
+          const data = {
+            objectId: facility.id,
+            equipments: equipmentsData,
+          };
 
-        const a = document.createElement('a');
+          createActDocument(data, {
+            onSuccess: ({ filename, blob }) => downloadFile(blob, filename),
+          });
+        }
+        break;
+      case DocEnums.passport:
+        {
+          const equipmentsData = equipments.map(({ data, count, end }) => ({
+            id: data.id,
+            amount: count,
+            end: end || '',
+          }));
 
-        a.href = url;
-        a.download = filename;
+          const data = {
+            objectId: facility.id,
+            equipments: equipmentsData,
+            objectType: facilityText,
+          };
 
-        document.body.appendChild(a);
-
-        a.click();
-
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      },
-    });
+          createPassportDocument(data, {
+            onSuccess: ({ filename, blob }) => downloadFile(blob, filename),
+          });
+        }
+        break;
+    }
   };
 
   return (
@@ -144,30 +176,42 @@ export const Documents: FC = () => {
           </Box>
         </Box>
 
+        {docType === DocEnums.passport && (
+          <TextField
+            sx={{ mt: 2, background: 'white' }}
+            size="small"
+            label="Тип объекта"
+            multiline
+            rows={3}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setFacilityText(e.target.value)}
+          />
+        )}
+
         <Box display="flex" flexDirection="column" mt={2}>
-          {equipments.map(({ data: { id, name }, count }) => (
+          {equipments.map(({ data: { id, name }, count, end }) => (
             <EquipmentItem
               key={id}
               name={name}
               count={count}
               onDelete={handleDeleteEquipment(id)}
-              onChange={() => handleSetEditEquipment({ id, name }, count)}
+              onChange={() => handleSetEditEquipment({ id, name }, count, end)}
+              {...{ end: docType === DocEnums.act ? undefined : end ?? '' }}
             />
           ))}
         </Box>
 
         {equipment && (
           <EquipmentModal
-            handleSuccess={(value) => {
+            handleSuccess={(value, end) => {
               switch (equipment.mode) {
                 case 'add':
                   {
-                    addEquipment(equipment.item, value);
+                    addEquipment(equipment.item, value, end);
                   }
                   break;
                 case 'edit':
                   {
-                    handleEditEquipment(equipment.item, value);
+                    handleEditEquipment(equipment.item, value, end);
                   }
                   break;
               }
@@ -183,6 +227,7 @@ export const Documents: FC = () => {
             mode={equipment.mode}
             value={equipment.value}
             label={equipment.item.name}
+            end={docType === DocEnums.act ? undefined : equipment.end || ''}
           />
         )}
       </Box>

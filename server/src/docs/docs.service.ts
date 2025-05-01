@@ -45,6 +45,7 @@ export class DocsService {
       OBJECT_TYPE: objectType,
       CUSTOMER: `${customer.name}`,
       LICENSEE: `${licensee.name}`,
+      YEAR: new Date().getFullYear(),
       EQUIPMENT_LIST: eqs.map((eq, index) => ({
         EQUIPMENT_NAME: eq.name,
         EQUIPMENT_AMOUNT: equipments[index].amount,

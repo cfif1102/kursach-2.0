@@ -1,9 +1,8 @@
-import { Body, Controller, Post, Res, StreamableFile } from '@nestjs/common';
+import { Body, Controller, Post, StreamableFile } from '@nestjs/common';
 import { DocsService } from './docs.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateActDto } from './dto/create-act.dto';
 import { CreatePassportDto } from './dto/create-passport.dto';
-import { Response } from 'express';
 
 @ApiTags('Docs')
 @Controller('docs')
@@ -26,7 +25,7 @@ export class DocsController {
 
     return new StreamableFile(buffer, {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      disposition: `attachment; filename="${encodeURIComponent(name)}"`,
+      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(name)}`,
     });
   }
 }

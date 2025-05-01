@@ -1,8 +1,5 @@
 import * as yup from 'yup';
-
-export interface EquipmentModalFormData {
-  value: number;
-}
+import { InferType } from 'yup';
 
 export const EquipmentModalSchema = yup.object({
   value: yup
@@ -10,4 +7,7 @@ export const EquipmentModalSchema = yup.object({
     .typeError('Поле должно быть числом')
     .positive('Поле должно быть положительным')
     .required('Обязательное поле'),
+  end: yup.string().optional().min(10, 'Минимум 10 символов'),
 });
+
+export type EquipmentModalFormData = InferType<typeof EquipmentModalSchema>;

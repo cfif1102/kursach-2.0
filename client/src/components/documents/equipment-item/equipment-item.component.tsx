@@ -7,7 +7,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import { EquipmentItemProps } from './equipment-item.types';
 
-export const EquipmentItem: FC<EquipmentItemProps> = ({ name, count, onDelete, onChange }) => {
+export const EquipmentItem: FC<EquipmentItemProps> = ({ name, count, onDelete, onChange, end }) => {
   return (
     <Box sx={{ mb: 2, width: '100%' }} display="flex" flexDirection="row" alignItems="center">
       <TextField
@@ -30,6 +30,19 @@ export const EquipmentItem: FC<EquipmentItemProps> = ({ name, count, onDelete, o
           ml: 2,
         }}
       />
+
+      {end !== undefined && (
+        <TextField
+          value={end}
+          label="Номер и срок действия"
+          size="small"
+          sx={{
+            background: 'white',
+            flexGrow: 1,
+            ml: 2,
+          }}
+        />
+      )}
 
       <IconButton onClick={onChange}>
         <EditOutlinedIcon />
