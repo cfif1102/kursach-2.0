@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, ILike, Repository } from 'typeorm';
 import { Facility } from './entities/facility.entity';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { CustomerService } from '@customer/customer.service';
 import { UpdateFacilityDto } from './dto/update-facility.dto';
 import { FacilityPaginatedDto } from './dto/facility-paginated.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { SearchFacilityDto } from './dto/search-facility.dto';
 
 @Injectable()
 export class FacilityService {
@@ -16,6 +17,18 @@ export class FacilityService {
     private readonly customerService: CustomerService,
   ) {
     this.facilityRepo = dataSource.getRepository(Facility);
+  }
+
+  async search(dto: SearchFacilityDto) {
+    const { pageSize, offset, name, address } = dto;
+
+    const [items, count] = await this.facilityRepo.findAndCount({
+      skip: offset,
+      take: pageSize,
+      where: { name: ILike(`%${name}%`), address: ILike(`%${address}%`) },
+    });
+
+    return new FacilityPaginatedDto(items, count, dto);
   }
 
   findOne(id: number) {

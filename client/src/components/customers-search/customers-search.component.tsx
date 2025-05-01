@@ -3,7 +3,6 @@ import { ChangeEvent, FC, useMemo, useState } from 'react';
 import { Box, Modal, TextField } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
 
-
 import { ICustomer } from '@@types';
 import { useCustomersSearch } from '@api';
 import { DataGrid } from '@components';

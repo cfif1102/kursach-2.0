@@ -9,3 +9,4 @@ export * from './licensees/licensees.mutations';
 export * from './licensees/licensees.queries';
 export * from './contracts/contracts.mutations';
 export * from './contracts/contracts.queries';
+export * from './documents/documents.mutations';

@@ -7,5 +7,5 @@ export const PARAMS = {
   QUERY_STORE_TIME: 5 * 60 * 1000,
   API_URL: import.meta.env.VITE_API_URL,
   PAGE_SIZE: 10,
-  DEBOUNCE_TIME: 1500,
+  DEBOUNCE_TIME: 1000,
 };

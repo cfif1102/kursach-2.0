@@ -25,9 +25,4 @@ export class CreateActDto {
   @Type(() => Number)
   @IsNumber()
   objectId: number;
-
-  @ApiProperty()
-  @Type(() => Number)
-  @IsNumber()
-  licenseeId: number;
 }

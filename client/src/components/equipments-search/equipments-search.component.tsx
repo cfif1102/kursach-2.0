@@ -1,19 +1,19 @@
 import { ChangeEvent, FC, useMemo, useState } from 'react';
 
-import { Box, Modal, TextField } from '@mui/material';
+import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
 
-
-import { ICustomer } from '@@types';
-import { useCustomersSearch } from '@api';
+import { IEquipment } from '@@types';
+import { useEquipmentsSearch } from '@api';
 import { DataGrid } from '@components';
-import { MODAL_STYLES, PARAMS } from '@constants';
+import { PARAMS } from '@constants';
 import { useDebounce } from '@hooks';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
-import { getCustomerColumns } from './equipments-search.constants';
-import { CustomerSearchProps } from './equipments-search.types';
+import { getEquipmentsColumns } from './equipments-search.constants';
+import { EquipmentsSearchProps } from './equipments-search.types';
 
-export const CustomersSearch: FC<CustomerSearchProps> = ({ open, onClose, onChange }) => {
+export const EquipmentsSearch: FC<EquipmentsSearchProps> = ({ onChange }) => {
   const [search, setSearch] = useState('');
   const searchDebounced = useDebounce(search, PARAMS.DEBOUNCE_TIME);
 
@@ -22,7 +22,7 @@ export const CustomersSearch: FC<CustomerSearchProps> = ({ open, onClose, onChan
     pageSize: PARAMS.PAGE_SIZE,
   });
 
-  const { data, isLoading, isError, isRefetching } = useCustomersSearch({
+  const { data, isLoading, isError, isRefetching } = useEquipmentsSearch({
     page: paginationModel.page + 1,
     pageSize: paginationModel.pageSize,
     name: searchDebounced,
@@ -36,42 +36,55 @@ export const CustomersSearch: FC<CustomerSearchProps> = ({ open, onClose, onChan
     setSearch(e.target.value);
   };
 
-  const handleSelect = (customer: ICustomer) => {
-    onChange(customer);
-    onClose();
+  const handleSelect = (equipment: IEquipment) => {
+    onChange(equipment);
   };
 
   const isLoad = isLoading || isRefetching;
 
-  const columns = useMemo(() => getCustomerColumns(isLoad, handleSelect), [isLoad]);
+  const columns = useMemo(() => getEquipmentsColumns(isLoad, handleSelect), [isLoad]);
+
+  const handleFlushSearch = () => {
+    setSearch('');
+  };
 
   if (isError) {
     return null;
   }
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box display="flex" flexDirection="column" sx={{ ...MODAL_STYLES, width: '800px' }}>
-        <TextField
-          label="Название заказчика"
-          size="small"
-          sx={{ mb: 2 }}
-          onChange={handleSearchChange}
-        />
+    <Box display="flex" flexDirection="column">
+      <TextField
+        label="Название оборудования"
+        size="small"
+        sx={{ mb: 2, background: 'white' }}
+        onChange={handleSearchChange}
+        value={search}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleFlushSearch}>
+                  <CloseOutlinedIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+        }}
+      />
 
-        <DataGrid
-          loading={isLoad}
-          disableRowSelectionOnClick
-          columns={columns}
-          rows={data?.items}
-          rowCount={data?.total}
-          paginationMode="server"
-          paginationModel={paginationModel}
-          onPaginationModelChange={handlePaginationModelChange}
-          keepNonExistentRowsSelected
-          disableVirtualization
-        />
-      </Box>
-    </Modal>
+      <DataGrid
+        loading={isLoad}
+        disableRowSelectionOnClick
+        columns={columns}
+        rows={data?.items}
+        rowCount={data?.total}
+        paginationMode="server"
+        paginationModel={paginationModel}
+        onPaginationModelChange={handlePaginationModelChange}
+        keepNonExistentRowsSelected
+        disableVirtualization
+      />
+    </Box>
   );
 };

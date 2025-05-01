@@ -5,3 +5,4 @@ export * from './licensee.types';
 export * from './store.types';
 export * from './common.types';
 export * from './contract.types';
+export * from './document.types';

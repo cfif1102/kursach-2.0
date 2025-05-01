@@ -12,3 +12,6 @@ export * from './licensees';
 export * from './menu';
 export * from './menu-item';
 export * from './customers';
+export * from './equipments-search';
+export * from './search-input';
+export * from './facilities-search';

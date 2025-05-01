@@ -27,6 +27,16 @@ export class LicenseeService {
     });
   }
 
+  findByCustomer(customerId: number) {
+    return this.licenseeRepo.findOneOrFail({
+      where: {
+        customer: {
+          id: customerId,
+        },
+      },
+    });
+  }
+
   async findMany(dto: PaginationDto) {
     const { pageSize, offset } = dto;
     const [items, count] = await this.licenseeRepo.findAndCount({

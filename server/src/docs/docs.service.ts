@@ -31,13 +31,13 @@ export class DocsService {
   }
 
   async createPassportDocument(dto: CreatePassportDto) {
-    const { objectId, equipments, licenseeId, objectType } = dto;
+    const { objectId, equipments, objectType } = dto;
 
     const eqs = await this.equipmentService.findByIds(equipments.map((eq) => eq.id));
 
     const facility = await this.facilityService.findOne(objectId);
     const customer = facility.customer;
-    const licensee = await this.licenseeService.findOne(licenseeId);
+    const licensee = await this.licenseeService.findByCustomer(customer.id);
 
     const data = {
       OBJECT_NAME: `${facility.name}`,
@@ -62,13 +62,13 @@ export class DocsService {
   }
 
   async createActDocument(dto: CreateActDto) {
-    const { objectId, equipments, licenseeId } = dto;
+    const { objectId, equipments } = dto;
 
     const eqs = await this.equipmentService.findByIds(equipments.map((eq) => eq.id));
 
     const facility = await this.facilityService.findOne(objectId);
     const customer = facility.customer;
-    const licensee = await this.licenseeService.findOne(licenseeId);
+    const licensee = await this.licenseeService.findByCustomer(customer.id);
 
     const data = {
       CUSTOMER: `${customer.name}`,

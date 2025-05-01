@@ -3,4 +3,5 @@ export const COLORS = {
   MAIN_BG: '#15616D',
   BG: '#FFECD1',
   SECONDARY: '#78290F',
+  ERROR_BG: '#780707',
 } as const;

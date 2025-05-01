@@ -7,11 +7,18 @@ import { UpdateFacilityDto } from './dto/update-facility.dto';
 import { Serialize } from 'src/common/decorators/serialize.decorator';
 import { FacilityPaginatedDto } from './dto/facility-paginated.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { SearchFacilityDto } from './dto/search-facility.dto';
 
 @ApiTags('Facility')
 @Controller('facilities')
 export class FacilityController {
   constructor(private readonly facilityService: FacilityService) {}
+
+  @Get('/search')
+  @ApiOkResponse({ type: FacilityPaginatedDto })
+  search(@Query() searchDto: SearchFacilityDto) {
+    return this.facilityService.search(searchDto);
+  }
 
   @Get(':id')
   @Serialize(FacilityDto)
@@ -21,7 +28,7 @@ export class FacilityController {
   }
 
   @Get()
-  @ApiOkResponse({ type: [FacilityPaginatedDto] })
+  @ApiOkResponse({ type: FacilityPaginatedDto })
   findMany(@Query() paginationDto: PaginationDto) {
     return this.facilityService.findMany(paginationDto);
   }

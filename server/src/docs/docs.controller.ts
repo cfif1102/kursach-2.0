@@ -11,15 +11,13 @@ export class DocsController {
   constructor(private readonly docsService: DocsService) {}
 
   @Post('create-act')
-  async generateAct(@Res({ passthrough: true }) res: Response, @Body() createActDto: CreateActDto) {
+  async generateAct(@Body() createActDto: CreateActDto) {
     const { buffer, name } = await this.docsService.createActDocument(createActDto);
 
-    res.set({
-      'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'Content-Disposition': `attachment; filename="${name}"`,
+    return new StreamableFile(buffer, {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(name)}`,
     });
-
-    return new StreamableFile(buffer);
   }
 
   @Post('create-passport')

@@ -4,7 +4,7 @@ import { SxProps } from '@mui/material';
 
 export interface ButtonProps {
   variant?: 'text' | 'contained' | 'outlined';
-  text: string;
+  text?: string;
   icon?: ReactElement;
   onClick?: (e?: MouseEvent<HTMLButtonElement>) => void;
   sx?: SxProps;

@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
-import { IFacility, IPaginated, IPagination } from '@@types';
+import { IFacility, IFacilitySearch, IPaginated, IPagination } from '@@types';
 import { api } from '@api';
 
 export const useFacility = (id: number) =>
@@ -16,5 +16,15 @@ export const useFacilities = (
   useQuery<IPaginated<IFacility>>({
     queryKey: ['facilities', params],
     queryFn: () => api.get('/facilities', { params }).then((res) => res.data),
+    ...options,
+  });
+
+export const useFacilitiesSearch = (
+  params: IFacilitySearch,
+  options?: UseQueryOptions<IPaginated<IFacility>>,
+) =>
+  useQuery<IPaginated<IFacility>>({
+    queryKey: ['facilities-search', params],
+    queryFn: () => api.get('/facilities/search', { params }).then((res) => res.data),
     ...options,
   });

@@ -21,6 +21,7 @@ async function bootstrap() {
   app.enableCors({
     origin: true,
     credentials: true,
+    exposedHeaders: ['Content-Disposition', 'Content-Type'],
   });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalInterceptors(new SerializeInterceptor(new Reflector()));

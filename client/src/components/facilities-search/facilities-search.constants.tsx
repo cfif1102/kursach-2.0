@@ -1,7 +1,7 @@
 import { SxProps } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { ICustomer } from '@@types';
+import { IFacility } from '@@types';
 import { Button, CellLoader, FILLED_BUTTON_SX } from '@components';
 import { COLORS, PARAMS } from '@constants';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
@@ -11,10 +11,10 @@ export const ADD_BTN_SX: SxProps = {
   mt: 2,
 };
 
-export const getCustomerColumns = (
+export const getFacilityColumns = (
   isLoading: boolean,
-  onSelectCb: (customer: ICustomer) => void,
-): GridColDef<ICustomer>[] => [
+  onSelectCb: (facility: IFacility) => void,
+): GridColDef<IFacility>[] => [
   {
     field: 'id',
     headerName: 'Код',
@@ -26,6 +26,14 @@ export const getCustomerColumns = (
   {
     field: 'name',
     headerName: 'Название',
+    editable: false,
+    flex: 2,
+    disableColumnMenu: true,
+    renderCell: (params) => (isLoading ? <CellLoader /> : params.value),
+  },
+  {
+    field: 'address',
+    headerName: 'Адрес',
     editable: false,
     flex: 2,
     disableColumnMenu: true,
@@ -55,9 +63,14 @@ export const getCustomerColumns = (
   },
 ];
 
-export const fakeCustomerData = Array(PARAMS.PAGE_SIZE)
+export const fakeFacilityData = Array(PARAMS.PAGE_SIZE)
   .fill({})
   .map((_, index) => ({
     id: index,
     name: '',
+    address: '',
+    customer: {
+      id: index,
+      name: '',
+    },
   }));

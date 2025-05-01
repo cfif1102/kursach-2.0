@@ -14,8 +14,8 @@ export const Button: FC<ButtonProps> = ({
   type = 'button',
 }) => {
   return (
-    <ButtonMui variant={variant} endIcon={icon} onClick={onClick} sx={sx} type={type}>
-      {text}
+    <ButtonMui variant={variant} endIcon={text ? icon : null} onClick={onClick} sx={sx} type={type}>
+      {text ?? icon}
     </ButtonMui>
   );
 };
