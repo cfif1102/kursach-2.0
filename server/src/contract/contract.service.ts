@@ -18,6 +18,16 @@ export class ContractService {
     this.contractRepo = dataSource.getRepository(Contract);
   }
 
+  async findByCustomer(customerId: number) {
+    return this.contractRepo.findOneOrFail({
+      where: {
+        customer: {
+          id: customerId,
+        },
+      },
+    });
+  }
+
   findOne(id: number) {
     return this.contractRepo.findOneOrFail({
       where: { id },

@@ -15,3 +15,8 @@ export interface ICreateActDocument {
   equipments: IEquipmentActData[];
   objectId: number;
 }
+
+export interface ICreateScheduleDocument {
+  schedule: number[][];
+  facilityId: number;
+}

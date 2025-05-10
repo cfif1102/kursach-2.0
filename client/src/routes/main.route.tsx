@@ -6,6 +6,7 @@ import {
   Equipments,
   Facilities,
   Licensees,
+  Schedule,
 } from '@components';
 import { RouteObject } from 'react-router-dom';
 
@@ -37,6 +38,10 @@ export const MainRoutes: RouteObject[] = [
       {
         path: '/documents',
         element: <Documents />,
+      },
+      {
+        path: '/schedule',
+        element: <Schedule />,
       },
     ],
   },

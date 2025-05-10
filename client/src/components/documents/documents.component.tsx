@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useCallback, useId, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useId } from 'react';
 
 import {
   Box,
@@ -10,11 +10,12 @@ import {
   TextField,
 } from '@mui/material';
 
-import { IEquipment, IFacility } from '@@types';
+import { IEquipment } from '@@types';
 import { useCreateActDocument, useCreatePassportDocument } from '@api';
-import { Button, EquipmentsSearch, FILLED_BUTTON_SX } from '@components';
+import { Button, EquipmentsSearch, FILLED_BUTTON_SX, useDocumentsContext } from '@components';
 import { useModalControls } from '@hooks';
 import { downloadFile } from '@utils';
+import { toast } from 'react-toastify';
 
 import { DocEnums, DOCS_TYPES } from './documents.constants';
 import { EquipmentItem } from './equipment-item';
@@ -24,22 +25,22 @@ import { FacilitySelect } from './facility-select';
 export const Documents: FC = () => {
   const equipmentModalControls = useModalControls();
 
-  const [facilityText, setFacilityText] = useState('');
-  const [facility, setFacility] = useState<IFacility | null>(null);
-  const [equipments, setEquipments] = useState<{ data: IEquipment; count: number; end?: string }[]>(
-    [],
-  );
-  const [equipment, setEquipment] = useState<{
-    item: IEquipment;
-    mode: 'add' | 'edit';
-    value: number;
-    end?: string;
-  } | null>(null);
+  const {
+    setEquipments,
+    setEquipment,
+    equipment,
+    equipments,
+    setDocType,
+    facility,
+    docType,
+    facilityText,
+    setFacility,
+    setFacilityText,
+  } = useDocumentsContext();
 
   const { mutate: createActDocument } = useCreateActDocument();
   const { mutate: createPassportDocument } = useCreatePassportDocument();
 
-  const [docType, setDocType] = useState<DocEnums>(DocEnums.act);
   const selectedLabelId = useId();
 
   const handleDocChange = (e: SelectChangeEvent) => {
@@ -131,6 +132,10 @@ export const Documents: FC = () => {
 
           createPassportDocument(data, {
             onSuccess: ({ filename, blob }) => downloadFile(blob, filename),
+            onError: () =>
+              toast.error(
+                'Не удалось создать документ. Вероятно, для объект нет лицензиата или контракта',
+              ),
           });
         }
         break;

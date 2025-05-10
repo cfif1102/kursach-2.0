@@ -7,5 +7,6 @@ import { CustomerModule } from '@customer/customer.module';
   controllers: [ContractController],
   providers: [ContractService],
   imports: [CustomerModule],
+  exports: [ContractService],
 })
 export class ContractModule {}

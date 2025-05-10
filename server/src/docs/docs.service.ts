@@ -11,6 +11,9 @@ import PizZip from 'pizzip';
 import * as fs from 'fs';
 import * as path from 'path';
 import { CreatePassportDto } from './dto/create-passport.dto';
+import { CreateScheduleDto } from './dto/create-schedule.dto';
+import { ContractService } from '@contract/contract.service';
+import { formatDate } from '@contract/contract.helpers';
 
 @Injectable()
 export class DocsService {
@@ -22,12 +25,45 @@ export class DocsService {
     private readonly facilityService: FacilityService,
     private readonly licenseeService: LicenseeService,
     private readonly equipmentService: EquipmentService,
+    private readonly contractService: ContractService,
     configService: ConfigService,
   ) {
     const { outFolder, docsFolder } = configService.get<DocsConfig>('docs')!;
 
     this.outFolder = outFolder;
     this.docsFolder = docsFolder;
+  }
+
+  async createScheduleDocument(dto: CreateScheduleDto) {
+    const { facilityId, schedule } = dto;
+
+    const facility = await this.facilityService.findOne(facilityId);
+    const customer = facility.customer;
+    const licensee = await this.licenseeService.findByCustomer(customer.id);
+    const contract = await this.contractService.findByCustomer(customer.id);
+
+    const data = {
+      OBJECT_ADDRESS: `${facility.address}, ${facility.name}`,
+      CONTRACT_NUMBER: contract.contractNumber,
+      CONTRACT_DATE: formatDate(contract.date),
+      LICENSEE: licensee.name,
+      CUSTOMER: customer.name,
+      DATE: new Date().getFullYear(),
+      months1: {
+        ...schedule[0].map((item) => (item === 1 ? '✔' : item === 2 ? '—' : '')),
+      },
+      months2: {
+        ...schedule[1].map((item) => (item === 1 ? '✔' : item === 2 ? '—' : '')),
+      },
+    };
+
+    const doc = this.writeDocument(
+      DocsTypes.SCHEDULE,
+      data,
+      `${Date.now()}_${facility.name}_${licensee.name}_SCHEDULE.docx`,
+    );
+
+    return doc;
   }
 
   async createPassportDocument(dto: CreatePassportDto) {

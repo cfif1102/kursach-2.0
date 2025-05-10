@@ -15,4 +15,5 @@ export interface DocsConfig {
 export enum DocsTypes {
   ACT = 'act.docx',
   PASSPORT = 'passport.docx',
+  SCHEDULE = 'schedule.docx',
 }

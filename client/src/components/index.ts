@@ -15,3 +15,5 @@ export * from './customers';
 export * from './equipments-search';
 export * from './search-input';
 export * from './facilities-search';
+export * from './schedule';
+export * from './schedule-calendar';
